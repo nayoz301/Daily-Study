@@ -389,27 +389,48 @@ function joinArrayOfArrays(arr) {
 //acc는 누적값이므로 컨캣을 해서 계속 누적해가는 아이디어로 사용
 
 문제30
-function findShortestWord(arr) {
-  if(arr.length===0){
-    return '';
-  }
-  else {
-    let brr = arr.filter(function(el){
-      return typeof el === 'string' //arr배열에서 string값만 뽑아내어 brr에 담는다.
+
+  //두번째 작성 코드//isNaN으로 필터 이용해서 숫자만 걸러줌 /isNaN으로 빈 문자열 나온거 제거/리듀스 사용해서 대소비교 /
+  function findShortestWord(arr) {
+    //문자를 새 배열에
+    let charArr = arr.filter(function(el){
+      return isNaN(el);
     })
-    if(brr.length===0){
+    if(charArr.length===0){
+      return '';
+    }  
+    let charLen = charArr.reduce(function(acc,cur){
+      if (acc.length<=cur.length){ //숫자가 같아도 acc를 리턴해야함. 길이가 중복될때는 첫번째 숫자를 리턴해야하기 때문.
+        return acc;
+      }else{
+        return cur;
+      }
+    })
+    return charLen;
+  }
+
+  //isNaN 말고 typeof로 숫자 거름 /sort사용해서 정열 반대로했음.
+  function findShortestWord(arr) {
+    if(arr.length===0){
       return '';
     }
     else {
-      let min = brr.sort(function(a,b){
-      return a.length-b.length;
+      let brr = arr.filter(function(el){
+        return typeof el === 'string' //arr배열에서 string값만 뽑아내어 brr에 담는다.
       })
-      return min[0];
-    }
-    
-  }  
-}
-
+      if(brr.length===0){
+        return '';
+      }
+      else {
+        let min = brr.sort(function(a,b){
+        return a.length-b.length;
+        })
+        return min[0];
+      }
+      
+    }  
+  }
+  
 문제31
 
 function studentReports(students) {
