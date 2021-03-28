@@ -73,6 +73,7 @@ function drop(num, arr) {
 }
 
 문제9
+//첫번째 푼 것
 function take(num, arr) {
     if (num >= arr.length) {
         return arr;;
@@ -87,8 +88,34 @@ function take(num, arr) {
     return take(head, tail)
 }
 
+//두번쨰 푼 것
+function take(num, arr) {
+    if (arr.length === 0 || num === 0) {
+        return [];
+    }
+    let head = arr[0];
+    let tail = arr.slice(1);
+    return [head].concat(take(num - 1, arr.slice(1)))
+}
+
 문제10
-//레퍼런스 보기
+//내가 푼 거
+function and(arr) {
+    if (arr.length === 0) {
+        return true;
+    }
+    let result;
+    let head = arr[0];
+    let tail = arr.slice(1);
+    result = head * and(tail);
+    if (result === 0) {
+        return false;
+    } else if (result === 1) {
+        return true;
+    }
+}
+
+//페어 때 같이 푼 거
 function and(arr) {
     if (arr.length === 0) {
         return true;
@@ -99,7 +126,19 @@ function and(arr) {
     return Boolean(head * and(tail));
 }
 
+//레퍼런스
+function and(arr) {
+    if (arr.length === 0) {
+        return true;
+    }
+    let head = arr[0];
+    let tail = arr.slice(1);
+
+    return head && and(tail)
+}
+
 문제11
+//레퍼런스
 function or(arr) {
     if (arr.length === 0) {
         return false;
@@ -109,7 +148,24 @@ function or(arr) {
     return head || or(tail)
 }
 
+//내가 푼 것
+function or(arr) {
+    if (arr.length === 0) {
+        return false;
+    }
+    let result = '';
+    let head = arr[0];
+    let tail = arr.slice(1);
+    result = head + or(tail);
+    if (result === 0) {
+        return false;
+    } else if (result >= 1) {
+        return true;
+    }
+}
+
 문제12
+//내가 푼 거
 function reverseArr(arr) {
     if (arr.length === 0) {
         return [];
@@ -117,6 +173,18 @@ function reverseArr(arr) {
     let head = arr[arr.length - 1]
     let tail = arr.slice(0, arr.length - 1)
     return [head].concat(reverseArr(tail))
+}
+
+//레퍼런스 코드
+function reverseArr(arr) {
+    if (arr.length === 0) {
+        return [];
+    }
+
+    // const [head, ...tail] = arr;
+    const head = arr[0];
+    const tail = arr.slice(1);
+    return reverseArr(tail).concat(head);
 }
 
 문제13
@@ -133,6 +201,7 @@ function findMatryoshka(matryoshka, size) {
 }
 
 문제14
+//내가 푼 거
 function unpackGiftbox(giftBox, wish) {
     if (giftBox.length === 0) {
         return false;
@@ -147,6 +216,36 @@ function unpackGiftbox(giftBox, wish) {
         }
     }
     return false;
+}
+
+//위에꺼랑 똑같은 데 중간 처리 방식이 조금 다름 
+function unpackGiftbox(giftBox, wish) {
+  for(let i = 0; i<giftBox.length;i++){
+    if(giftBox[i]===wish){
+      return true;
+    }else if(Array.isArray(giftBox[i])){
+      let result = [];
+      result = unpackGiftbox(giftBox[i], wish) // 여기선 return을 바로 하게 되면 안된다.
+      if (result===true){ // 바로 리턴을 하게 되면 배열안의 내용이 wish가 아닐 경우 다음으로 넘어가지 않고 바로 false를 리턴한다.
+      return true;
+      }
+    } 
+  }
+  return false; 
+}
+
+//Reduce를 이용해서 풀기
+function unpackGiftbox(giftBox, wish) {
+  let reducer = giftBox.reduce(function(acc,cur){
+    if (cur===wish){
+      return true;
+    } else if(Array.isArray(cur)){
+      return unpackGiftbox(cur,wish)
+    } else{
+      return acc;
+    }
+  },false)
+  return reducer;
 }
 
 문제15
