@@ -83,8 +83,8 @@ function printObject(obj) {
 //이것도 잘 기억하기
 function printObject(obj) {
     let n = '';
-    for (let [key, value] of Object.entries(obj)) {
-        n = n + `${key}: ${value}\n`
+    for (let [key, value] of Object.entries(obj)) { //[key,value] of Object.entries(obj) 오브쓴다는 거 알아두기
+        n = n + `${key}: ${value}\n` //여기서 바로 return해버리면 값이 안나온다. 일단 변수에 저장해두고 나중에 리턴해야함.
 
     }
     return n;
@@ -194,6 +194,15 @@ function getAllButLastElementOfProperty(obj, key) {
 }
 
 문제19
+//내 풀이
+function extend(obj1, obj2) {
+    for (let key in obj2) {
+        if (!obj1[key]) { //만약에 obj1[key]=== obj2[key]일 때로 설정하면 계속 중첩이 되므로 중첩 방지를 위해 이렇게 해줌.
+            obj1[key] = obj2[key];
+        }
+    }
+}
+//레퍼런스
 function extend(obj1, obj2) {
     for (let key in obj2) {
         if (!(key in obj1)) {
@@ -216,6 +225,18 @@ function countAllCharacters(str) {
     }
     return obj;
 }
+
+function countAllCharacters(str) {
+    let result = {};
+    for (let i = 0; i < str.length; i++) {
+        if (!result[str[i]]) {  // 이 부분이 중요!! 객체에 key값이 없어서 현재 요소가 undefined일 때 문자열을 넣는 것은 가능하지만
+            result[str[i]] = 0;   // undefined일 경우 숫자를 넣어줬을 때 NaN이 나오므로 반드시 0을 먼저 할당하고 카운트 해줘야한다.
+        }
+        result[str[i]]++;
+    }
+    return result;
+}
+
 //obj 는 str에서 어떤 문자가 나온 횟수를 담고 있는 객체입니다.
 //즉 for 문을 돌릴 때 obj에서 str[i]가 key인 value를 1씩 증가시켜주면 되겠죠 (obj[str[i]]++)
 //그런데 obj는 빈 객체로 시작합니다. 처음 나온 문자는 obj에 포함이 안 되어 있으니 obj[str[i]]를 한다면
@@ -265,9 +286,30 @@ function mostFrequentCharacter(str) {
     }
     return obj['mostFrequent']
 }
-  // obj객체에 반복되는 문자와 반복횟수 를 먼저 지정해준다.
-  // 변수값에 ' '가 있는 경우 continue를 써서 다음루프로 넘겨버린다.
-  // 해당 글자가 객체에 undefined인지 확인을 하고 그렇다면 0을 속성값으로 넣어둔다.
-  // 그 후에 속성값을 ++ 해준다.
-  // 해당 키에 해당하는 밸류를 매칭해서 카운트가 더 큰지 확인하고 더 크다면 저장한다.
-  // 값을 반환한다.
+// obj객체에 반복되는 문자와 반복횟수 를 먼저 지정해준다.
+// 변수값에 ' '가 있는 경우 continue를 써서 다음루프로 넘겨버린다.
+// 해당 글자가 객체에 undefined인지 확인을 하고 그렇다면 0을 속성값으로 넣어둔다.
+// 그 후에 속성값을 ++ 해준다.
+// 해당 키에 해당하는 밸류를 매칭해서 카운트가 더 큰지 확인하고 더 크다면 저장한다.
+// 값을 반환한다.
+
+//내가 다시 푼 것
+function mostFrequentCharacter(str) {
+    let result = { mostFrequent: '', mostCount: 0 };
+    for (let i = 0; i < str.length; i++) {
+        if (str[i] === ' ') {
+            continue;
+        } else {
+            if (!result[str[i]]) {
+                result[str[i]] = 0;
+            }
+            result[str[i]]++;
+        } // 여기까지 객체 뽑기 완료
+
+        if (result[str[i]] > result.mostCount) {
+            result.mostCount = result[str[i]];
+            result.mostFrequent = str[i]
+        }
+    }
+    return result.mostFrequent;
+}
