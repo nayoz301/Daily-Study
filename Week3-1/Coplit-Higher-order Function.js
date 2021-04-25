@@ -550,6 +550,6 @@ function sumOfArraysInArray(arr) {
 
   arr = arr.reduce(function(acc,cur){
     return acc + cur;
-  },0) <- //초기값 0 설정함으로서 number가 없는 빈배열 0으로 리턴해줌
+  },0) //초기값 0 설정함으로서 number가 없는 빈배열 0으로 리턴해줌
   return arr;
 }
